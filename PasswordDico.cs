@@ -84,7 +84,7 @@ namespace PasswordApp
             Console.ReadKey();
         }
 
-        private int CheckWebsiteExist(string name)
+        public int CheckWebsiteExist(string name)
         {
             if (passwordDatas.Count == 0)
                 return -1;

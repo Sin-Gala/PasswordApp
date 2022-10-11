@@ -53,8 +53,63 @@ namespace PasswordApp
         private void SeePassword()
         {
             Console.Clear();
-            Console.WriteLine("See");
-            Console.ReadKey();
+
+            Console.WriteLine("Enter the website name");
+            string website = Console.ReadLine();
+
+            int index = passwordDico.CheckWebsiteExist(website);
+
+            if (index == -1)
+            {
+                Console.WriteLine("This website isn't saved yet. " +
+                    "\nDo you wish to add it? y/n");
+
+                switch (Console.ReadLine())
+                {
+                    case "y":
+                        Console.WriteLine("Enter the password");
+                        string password = Console.ReadLine();
+                        passwordDico.AddDatas(new PasswordDatas(website, password));
+                        break;
+                    case "n":
+                    default:
+                        break;
+                }
+
+                CallMainMenu();
+                return;
+            }
+
+            PasswordDatas datas = passwordDico.passwordDatas[index];
+
+            Console.WriteLine("\nWebsite: " + datas.website + "\nPassword: " + datas.password);
+
+            Console.WriteLine("\nDo you wish to edit this password? y/n");
+            switch (Console.ReadLine())
+            {
+                case "y":
+                    // Validate and send the datas
+                    EditPassword(datas.website);
+                    CallMainMenu();
+                    break;
+                case "n":
+                default:
+                    Console.WriteLine("Do you wish to delete the password? y/n");
+                    switch (Console.ReadLine())
+                    {
+                        case "y":
+                            passwordDico.RemoveDatas(datas.website);
+                            CallMainMenu();
+                            break;
+                        case "n":
+                        default:
+                            // Cancel and go back main menu
+                            CallMainMenu();
+                            break;
+                    }
+                    break;
+            }
+
             CallMainMenu();
         }
 
@@ -102,6 +157,29 @@ namespace PasswordApp
 
             Console.WriteLine("Enter the website name");
             string website = Console.ReadLine();
+            Console.WriteLine("Enter the new password");
+            string password = Console.ReadLine();
+
+            Console.WriteLine("Is this correct y/n: " +
+                "\nWebsite: " + website + "\nPassword: " + password);
+
+            switch (Console.ReadLine())
+            {
+                case "y":
+                    // Validate and send the datas
+                    passwordDico.EditDatas(website, password);
+                    CallMainMenu();
+                    break;
+                case "n":
+                default:
+                    // Cancel and go back main menu
+                    CallMainMenu();
+                    break;
+            }
+        }
+
+        private void EditPassword(string website)
+        {
             Console.WriteLine("Enter the new password");
             string password = Console.ReadLine();
 
