@@ -12,6 +12,7 @@ namespace PasswordApp
             if (passwordDatas.Count == 0)
             {
                 passwordDatas.Add(datas);
+                // Save dico
                 Console.WriteLine("Add " + datas.website + " - " + datas.password);
                 Console.ReadKey();
                 return;
@@ -31,13 +32,30 @@ namespace PasswordApp
             }
 
             passwordDatas.Add(datas);
+            // Save dico
             Console.WriteLine("Add " + datas.website + " - " + datas.password);
             Console.ReadKey();
         }
 
-        public void RemoveDatas(PasswordDatas datas)
+        public void RemoveDatas(string website)
         {
-            Console.WriteLine("Remove");
+            if (passwordDatas.Count == 0)
+            {
+                Console.WriteLine("No Websites Saved");
+                Console.ReadKey();
+                return;
+            }
+
+            for (int i = passwordDatas.Count -1; i >= 0; i--)
+            {
+                if (passwordDatas[i].website != website)
+                    continue;
+
+                passwordDatas.RemoveAt(i);
+                Console.WriteLine("Remove " + website);
+                break;
+            }
+
             Console.ReadKey();
         }
 

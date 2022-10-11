@@ -62,7 +62,7 @@ namespace PasswordApp
         {
             Console.Clear();
 
-            Console.WriteLine("Enter the website/app name and/or URL");
+            Console.WriteLine("Enter the website name");
             string website = Console.ReadLine();
             Console.WriteLine("\nEnter your password");
             string password = Console.ReadLine();
@@ -88,7 +88,11 @@ namespace PasswordApp
         private void RemovePassword()
         {
             Console.Clear();
-            passwordDico.RemoveDatas(new PasswordDatas("test"));
+
+            Console.WriteLine("Enter the website name");
+            string website = Console.ReadLine();
+
+            passwordDico.RemoveDatas(website);
             CallMainMenu();
         }
 
