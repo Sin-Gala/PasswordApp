@@ -4,7 +4,11 @@ namespace PasswordApp
 {
     public class UserInteraction
     {
-        bool launched = false;
+        public UserInteraction()
+            => passwordDico = new PasswordDico(); // Need to use save files
+
+        private PasswordDico passwordDico;
+        private bool launched = false;
 
         public void CallMainMenu()
         {
@@ -17,6 +21,11 @@ namespace PasswordApp
             Console.WriteLine("\n1: See a Password \n2: Add a Password \n3: Edit a Password " +
                 "\n4: Delete a Password \n5 Delete all datas");
 
+            CheckMenuChoice();
+        }
+
+        private void CheckMenuChoice()
+        {
             switch (Console.ReadLine())
             {
                 case "1": // See Password
@@ -36,35 +45,66 @@ namespace PasswordApp
                     break;
                 default:
                     Console.WriteLine("Please enter a valid command");
-                    Console.ReadKey();
-                    CallMainMenu();
+                    CheckMenuChoice();
                     break;
             }
         }
 
         private void SeePassword()
         {
+            Console.Clear();
             Console.WriteLine("See");
+            Console.ReadKey();
+            CallMainMenu();
         }
 
         private void AddPassword()
         {
-            Console.WriteLine("Add");
+            Console.Clear();
+
+            Console.WriteLine("Enter the website/app name and/or URL");
+            string website = Console.ReadLine();
+            Console.WriteLine("\nEnter your password");
+            string password = Console.ReadLine();
+
+            Console.WriteLine("Is this correct y/n: " +
+                "\nWebsite: " + website + "\nPassword: " + password);
+
+            switch (Console.ReadLine())
+            {
+                case "y":
+                    // Validate and send the datas
+                    passwordDico.AddDatas(new PasswordDatas(website, password));
+                    CallMainMenu();
+                    break;
+                case "n":
+                default:
+                    // Cancel and go back main menu
+                    CallMainMenu();
+                    break;
+            }
         }
 
         private void RemovePassword()
         {
-            Console.WriteLine("Remove");
+            Console.Clear();
+            passwordDico.RemoveDatas(new PasswordDatas("test"));
+            CallMainMenu();
         }
 
         private void EditPassword()
         {
-            Console.WriteLine("Edit");
+            Console.Clear();
+            passwordDico.EditDatas(new PasswordDatas("test", "test"), "a");
+            CallMainMenu();
         }
 
         private void DeleteAll()
         {
+            Console.Clear();
             Console.WriteLine("Delete all");
+            Console.ReadKey();
+            CallMainMenu();
         }
     }
 }

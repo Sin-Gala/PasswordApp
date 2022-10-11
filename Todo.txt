@@ -2,3 +2,5 @@
 - App Settings -> allow for protection (multiple accounts?) by password or something
 - Create the User Interactions (Add, See, Delete, Edit, Delete all)
 - ASCII art for menu (?)
+
+- "Warning" -> need different websites names
