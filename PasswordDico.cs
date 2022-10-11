@@ -39,30 +39,65 @@ namespace PasswordApp
 
         public void RemoveDatas(string website)
         {
-            if (passwordDatas.Count == 0)
+            int index = CheckWebsiteExist(website);
+
+            if (index == -1)
             {
                 Console.WriteLine("No Websites Saved");
                 Console.ReadKey();
                 return;
             }
 
-            for (int i = passwordDatas.Count -1; i >= 0; i--)
-            {
-                if (passwordDatas[i].website != website)
-                    continue;
-
-                passwordDatas.RemoveAt(i);
-                Console.WriteLine("Remove " + website);
-                break;
-            }
+            passwordDatas.RemoveAt(index);
+            Console.WriteLine("Remove " + website);
 
             Console.ReadKey();
         }
 
-        public void EditDatas(PasswordDatas datas, string newPassword)
+        public void EditDatas(string website, string newPassword)
         {
-            Console.WriteLine("Edit");
+            int index = CheckWebsiteExist(website);
+
+            if (index == -1)
+            {
+                // Move this to User Interaction
+                Console.WriteLine("This website isn't saved yet. " +
+                    "\nDo you wish to add it? y/n");
+
+                switch (Console.ReadLine())
+                {
+                    case "y":
+                        AddDatas(new PasswordDatas(website, newPassword));
+                        return;
+                    case "n":
+                    default:
+                        break;
+                }
+
+                Console.ReadKey();
+                return;
+            }
+
+            passwordDatas[index].SetPassword(newPassword);
+            Console.WriteLine("Edited " + website + " - " + newPassword);
+
             Console.ReadKey();
+        }
+
+        private int CheckWebsiteExist(string name)
+        {
+            if (passwordDatas.Count == 0)
+                return -1;
+
+            for (int i = 0; i < passwordDatas.Count; i++)
+            {
+                if (passwordDatas[i].website != name)
+                    continue;
+
+                return i;
+            }
+
+            return -1;
         }
     }
 

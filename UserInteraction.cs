@@ -99,8 +99,28 @@ namespace PasswordApp
         private void EditPassword()
         {
             Console.Clear();
-            passwordDico.EditDatas(new PasswordDatas("test", "test"), "a");
-            CallMainMenu();
+
+            Console.WriteLine("Enter the website name");
+            string website = Console.ReadLine();
+            Console.WriteLine("Enter the new password");
+            string password = Console.ReadLine();
+
+            Console.WriteLine("Is this correct y/n: " +
+                "\nWebsite: " + website + "\nPassword: " + password);
+
+            switch (Console.ReadLine())
+            {
+                case "y":
+                    // Validate and send the datas
+                    passwordDico.EditDatas(website, password);
+                    CallMainMenu();
+                    break;
+                case "n":
+                default:
+                    // Cancel and go back main menu
+                    CallMainMenu();
+                    break;
+            }
         }
 
         private void DeleteAll()
