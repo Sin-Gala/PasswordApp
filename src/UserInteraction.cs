@@ -89,7 +89,9 @@ namespace PasswordApp
             {
                 case "y":
                     // Validate and send the datas
-                    EditPassword(datas.website);
+                    int ind = passwordDico.CheckWebsiteExist(website);
+
+                    EditPassword(datas.website, ind);
                     CallMainMenu();
                     break;
                 case "n":
@@ -147,8 +149,21 @@ namespace PasswordApp
             Console.WriteLine("Enter the website name");
             string website = Console.ReadLine();
 
-            passwordDico.RemoveDatas(website);
-            CallMainMenu();
+            Console.WriteLine("Are you sure you want to delete this website and password? y/n");
+
+            switch (Console.ReadLine())
+            {
+                case "y":
+                    // Validate and send the datas
+                    passwordDico.RemoveDatas(website);
+                    CallMainMenu();
+                    break;
+                case "n":
+                default:
+                    // Cancel and go back main menu
+                    CallMainMenu();
+                    break;
+            }
         }
 
         private void EditPassword()
@@ -167,7 +182,28 @@ namespace PasswordApp
             {
                 case "y":
                     // Validate and send the datas
-                    passwordDico.EditDatas(website, password);
+                    int index = passwordDico.CheckWebsiteExist(website);
+
+                    if (index == -1)
+                    {
+                        Console.WriteLine("This website isn't saved yet. " +
+                            "\nDo you wish to add it? y/n");
+
+                        switch (Console.ReadLine())
+                        {
+                            case "y":
+                                passwordDico.AddDatas(new PasswordDatas(website, password));
+                                return;
+                            case "n":
+                            default:
+                                break;
+                        }
+
+                        Console.ReadKey();
+                        return;
+                    }
+
+                    passwordDico.EditDatas(website, password, index);
                     CallMainMenu();
                     break;
                 case "n":
@@ -178,7 +214,7 @@ namespace PasswordApp
             }
         }
 
-        private void EditPassword(string website)
+        private void EditPassword(string website, int index)
         {
             Console.WriteLine("Enter the new password");
             string password = Console.ReadLine();
@@ -190,7 +226,7 @@ namespace PasswordApp
             {
                 case "y":
                     // Validate and send the datas
-                    passwordDico.EditDatas(website, password);
+                    passwordDico.EditDatas(website, password, index);
                     CallMainMenu();
                     break;
                 case "n":

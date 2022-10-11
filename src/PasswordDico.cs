@@ -5,7 +5,7 @@ namespace PasswordApp
 {
     public class PasswordDico
     {
-        public List<PasswordDatas> passwordDatas = new List<PasswordDatas>();
+        public List<PasswordDatas> passwordDatas { get; private set; } = new List<PasswordDatas>();
 
         public void AddDatas(PasswordDatas datas)
         {
@@ -54,30 +54,8 @@ namespace PasswordApp
             Console.ReadKey();
         }
 
-        public void EditDatas(string website, string newPassword)
+        public void EditDatas(string website, string newPassword, int index)
         {
-            int index = CheckWebsiteExist(website);
-
-            if (index == -1)
-            {
-                // Move this to User Interaction
-                Console.WriteLine("This website isn't saved yet. " +
-                    "\nDo you wish to add it? y/n");
-
-                switch (Console.ReadLine())
-                {
-                    case "y":
-                        AddDatas(new PasswordDatas(website, newPassword));
-                        return;
-                    case "n":
-                    default:
-                        break;
-                }
-
-                Console.ReadKey();
-                return;
-            }
-
             passwordDatas[index].SetPassword(newPassword);
             Console.WriteLine("Edited " + website + " - " + newPassword);
 
